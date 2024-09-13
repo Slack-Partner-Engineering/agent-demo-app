@@ -1,0 +1,221 @@
+Company Holidays for 2024. There are 11 total company holidays in 2024.
+
+Monday, January 1: New Year’s Day 
+Monday, January 15: Birthday of Martin Luther King, Jr.
+Monday, February 19: President’s Day (George Washington’s Birthday)
+Monday, May 27: Memorial Day
+Wednesday, June 19: Juneteenth
+Thursday, July 4: Independence Day
+Monday, September 02: Labor Day
+Monday, October 14: Indigenous Peoples’ Day (Columbus Day)
+Monday, November 11: Veterans Day
+Thursday, November 28: Thanksgiving Day
+Wednesday, December 25: Christmas Day
+
+I think we did this once before, but here’s a list of “benefits you maybe forgot about or never heard of”. These are super hard to find on Concierge unless you know about them, so here’s a more compact list
+Specific to remote employees
+$500 monthly internet reimbursement - https://concierge.it.salesforce.com/articles/en_US/How_To/Ohana-Home-Home-Internet-or-Coworking-Space-Reimbursement-For-Remote-Employees-Only
+$5000 USD home office refresh every 6 years- https://concierge.it.salesforce.com/articles/en_US/How_To/Remote-Employee-Expenses
+$10 per month wellness reimbursement (includes LOTS of things you wouldn’t expect like smart watches and cooking classes) - https://concierge.it.salesforce.com/articles/en_US/How_To/Wellness-Reimbursement-Program-Information
+$150 one-time noise canceling headphones expense - https://concierge.it.salesforce.com/articles/en_US/How_To/Noise-Canceling-Headphones
+Color genomic testing - http://color.com/go/Salesforce
+Cancer screening (need to be high risk) - galleri.com/salesforce
+Identity theft monitoring + VPN + more for you and 2 family members - http://go.aura.com/salesforce
+Life coaching through BetterUp - http://members.betterup.com/salesforce
+Therapy through Lyra - http://salesforce.lyrahealth.com/
+PriorityPass membership (pay per lounge access, reimbursed for work travel) - https://concierge.it.salesforce.com/articles/en_US/How_To/How-To-Apply-For-Priority-Pass
+Unlimited one-on-one visits with a dietician from FoodSmart- https://www.foodsmart.com/salesforce/member
+Dispute medical bills, get expert 2nd opinions, and ask health questions via IncludedHealth (GrandRounds) - https://includedhealth.com/microsite/salesforce/
+Parenting
+Maternity doula reimbursement - $2000 per pregnancy - https://concierge.it.salesforce.com/articles/en_US/How_To/Maternity-Doula-Reimbursement-US
+Breastmilk shipping (Milkstork) - https://www.milkstork.com/salesforce
+Breastmilk nutritional analysis (Milkstork) - https://www.milkstork.com/salesforce
+Gift set for newborn parents from Oneberrie w/ code SFBABY - https://oneberrie.com/
+Cleo - Personalized coaching to help you raise your kids - http://hicleo.com/enroll
+Clinical guidance for a child’s ADD, autism, behavioral, or developmental issues via Rethink - http://rethinkbenefits.com/sf
+(Very basic) Financial Planning from BrightPlan - https://www.brightplan.com/enroll?code=salesforce
+Chronic pain support from Hinge - https://www.hingehealth.com/for/salesforce1
+The secret home office discounts quip doc - https://corp.quip.com/QRXtAwKjtrj7/SalesforceHome-Shopping-Guide-for-Your-Home-Office
+Student loan management/repayment platform from Candid.ly - http://salesforce.candid.ly/
+Free RocketLawyer (legal documents, ask an attorney) - http://go.rocketlawyer.com/salesforce
+$100 at closing for a refi or mortgage from Chase - https://www.chase.com/personal/mortgage/mortgage-offer.safo.html?SourceCode=CRPE01
+$100/$150 yearly credit on your personal (gold/platinum) Amex with your corp amex - https://www.americanexpress.com/us/credit-cards/gcpadvantage/login/?eep=36038&channel=launch&extlink=us-pa-CPS-launchem
+Gender Inclusive Benefits - $50000 wardrobe, $100000 legal - https://concierge.it.salesforce.com/articles/en_US/How_To/Gender-Inclusive-Benefits-US
+Random discounts (including state specific ones) through Fond - fond.co
+Car rental discount and status match (if you can use it) are legit
+Lots of meal box discounts (HelloFresh, Freshly, Everyplate, Sunbasket, Home Chef)
+Health insurance while traveling internationally (even if travel is personal) - Either coordinate care through ISOS or file directly with Cigna https://concierge.it.salesforce.com/articles/en_US/How_To/Global-Travel-Insurance-International-SOS
+
+AI Assistant Apps
+This document outlines the necessary steps for partners to integrate apps with Slack, providing a modern conversational experience and easy app discovery. We are releasing, into a private Beta, a new container which is designed to meet the needs of a new class of applications. Our goal is to make the integration streamlined for you as a developer and have the new surface be intuitive for end users.
+
+How to approach building and feedback:
+
+Overview of the new Features
+Using the New Container
+Getting Started
+Specifications
+Feature Feedback
+Overview of the features 
+Assistant Entry Point: Users can find and open AI apps through a new entry point in Slack. Image of an entry point
+Assistant Split View: Users can initiate private conversations with AI apps in a split view within a channel, in the flow of work.
+Image of split view
+
+Loading States: Developers can set loading states while application operations are in progress. Image of loading states
+
+Suggested Prompts: Developers can define default suggested prompts as well as override for each user interaction. Image of suggested prompts
+
+Assistant Threads: These are designed to organize conversations and feature a single thread in the conversational experience. Slack will automatically start new threads when appropriate.
+
+Image of assistant threads
+Using the new container 
+We are introducing a new scope, an outgoing Slack event, incoming APIs, and an optional Block Kit property.
+
+Type	Stability	Name	Description
+Scope
+Stable
+assistant:write
+Enables the new Web APIs.
+API
+Stable
+assistant.threads.setStatus
+Enables apps to push status updates to users, to help set expectations for potentially slow responses (e.g.: app is thinking...).
+API
+Stable
+assistant.threads.setSuggestedPrompts
+API for apps to set suggested prompts in the given Assistant thread.
+Event
+Stable
+assistant_thread_started
+Event that apps will receive when users start a new Assistant thread.
+Block Kit
+Stable
+Block Kit section block expand property
+Boolean that permits AI Assistants to post long messages, without users needing to click "see more" to expand the message.
+Interacting with the new Container
+You can listen for the assistant_thread_started event to know when a user opens the container.
+You can then first respond with assistant.threads.setStatus if you need time to generate prompts. If you are sending hard coded prompts then you can skip this step.
+Call assistant.threads.setSuggestedPrompts and send 1 or more suggested prompts.
+The user will either type a message or click on a prompt which will trigger a message.im event. The event will be the same whether the user clicked the suggested prompt or typed it manually.
+When your app receives a message it can immediately respond with assistant.threads.setStatus to trigger the new typing indicator in the container.
+As soon as you send a message back to the user via chat.postMessage the indicator will be automatically cleared in the UI.
+When a user DMs with the app
+Users will be able to message your app via the container or through the existing method in the messages tab for your app. You are able to respond to the user directly or you can pass back the thread_ts to start a new thread. In most situations you will always want to keep it simple and call chat.postMessage with the thread_ts to start a new conversational thread with the user. When you receive the thread_ts, if your app stores the long lived context or the state of a thread, you can retrieve the conversation by using thread_ts as the unique identifier.
+As a best practice any time you receive a message.im event, respond immediately with a assistant.threads.setStatus call to set a loading state in the Slack UI. Note: @-mentions in channels can happen like they do today, whether you support this or not is up to you. You can engage with the user or ask them to use the container to converse with your app.
+
+Where in Slack is the User?
+This container is new to Slack and can be opened from anywhere in Slack, it can also stay open as the user navigates around channels. When the user first opens the container we will send the assistant_thread_started event along with the context. This will contain the channel the user is currently viewing. ex: context: { channel_id: 'C45544334GSSK4' }. You will not receive updated events if the user moves around Slack once the container is open. It is not required to do anything with the context, some applications will have no use for it. But if you do want to use it for app logic you will need to first call conversations.info to see if your app has access to the channel.
+
+Onboarding a new User
+A user's first impression is the most import aspect of the integration. Users will not know what to do or how to do it. Capitilizing on this first interaction is an opportunity to create a delightful experience.
+
+Block Kit and Interactivity
+Block Kit allows you to interact with the user in various ways using all the currenly available tools. Drop downs, buttons, etc... are all great tools to interact with a user in a rich way. Block Kit is not a requirement, however, if your app is simpler and you do not want to listen to and respond to interactivity then you can just message the user via plain text and Slack markdown.
+
+Getting Started 
+Now that you have a sense of the new features being released, let's move on to building an app.
+
+Create an application. Go to https://api.slack.com/apps and click "Create New App". Make sure to select a team where you want to test and develop.
+Send Slack your team_id and app_id and we can enable the new features for your team and application.
+Back in your app setup, after Slack has enabled your app, you will want to add the new assistant:write scope.
+Include im:history and chat:write scopes and listen to message.im events. This is the mechanism for the user to communicate with your application.
+Install the app to your team Instal App -> Install to Workspace.
+When you open up Slack you should see your app in the UI. If you don't, try loading Slack in a browser and doing a hard refresh. If you still don't see it, let us know and we can check the setup. Note: Once we release the UI elements in app setup you will not need Slack to turn on and off features for you. This is coming soon.
+Specifications 
+Events
+message.im - This is an outgoing event from Slack sent when a user writes to your app or clicks on a prompt.
+
+Copy
+{
+      "type": "message",
+      "channel": "D0887DD",
+      "user": "UDD6543FF",
+      "text": "When are this year's company holidays?",
+      "thread_ts":"134567..23456",
+      "ts": "1387.654e6435",
+      "event_ts": "23456.234567854",
+      "channel_type": "im"
+}
+
+assistant_thread_started - This is an outgoing event from Slack when a user opens the container.
+
+Copy
+{
+    "type": "assistant_thread_started",
+    "assistant_thread": {
+        "user_id": "U051T4UDY9",
+        "context": "CSDFDS342"
+    },
+    "event_ts": "1715873754.429808"
+}
+Web APIs
+assistant.threads.setSuggestedPrompts - Set suggested prompts in the container.
+
+Request
+
+Copy
+{
+   "channel_id": "D2345SFDG",
+   "thread_ts": "12343.43567893444",
+   "title": "Welcome, what can I do for you?",
+   "prompts": [
+         {
+            title: "What is the best dinosaur?",
+            message: "What are the two best dinosaurs?",
+          },
+          {
+            title: "What does SLACK stand for?",
+            message: "What does SLACK stand for?",
+          },
+          {
+            title: "Tell me something positive.",
+            message: "Provide one positive sentance.",
+          },
+   ]
+}
+Response
+
+Copy
+   {
+    "ok: true
+   }
+
+assistant.threads.setStatus - Set the loading status in the container while your app builds a response. Request
+
+Copy
+{
+   "status": "Hang tight...",
+   "channel_id": "D324567865",
+   "thread_ts": "1786543.345678"
+}
+Response
+
+Copy
+   {
+    "ok: true
+   }
+Block Kit
+There is a new top level element you can send when sending Block Kit payloads to Slack. expand can be set to true if you want the user to see all the message if it's long in length.
+
+Future proof
+We are actively developing on this feature, there a few things you can do to future proof your application.
+
+When you get an event, always send a time stamp. Ultimately we will be sending thread_ts but until then if you respond with the logic: thread_ts || ts || event_ts then you will be covered for the future release. This will ensure a thread is always started with the user.
+When you receive the assistant_thread_started event, always call assistant.threads.setSuggestedPrompts right away.
+Immediately after this, call chat.postMessage to send a greeting message.
+Feedback 
+Current feature feedback
+What do you think of the new container? Did we miss anything?
+How easy/hard do you find the APIs to build against?
+Do the events and payloads make sense for your use case?
+How often do you want Slack to start a new thread? What would be your ideal new vs existing thread behavior?
+Future feature feedback
+There are other areas where we are exploring and would love your feedback on whether or not you find them necessary or valuable.
+
+Additional entry points. What would you want to see in addition to the current entry point? Responding to workflows, shortcuts, slash commands, etc...?
+Streaming. How critical is streaming to your use case? What kind of support would you like to see here?
+Are you looking to use Slack data in your app? How would you want to get this data and what kind of Slack data would you want? Messages, docs, etc...?
+Feedback mechanism. Would you want Slack to offer a native feedback mechanism to help fine tune your application? Or would you want to take care of this on your own in the application?
+Admin controls will be built in to the product. Is there anything specific you would want to see there to serve your users?
+What would you want for thread management? Would you want to set the title or other information to be shown to the user? How long would you want a thread to be active with a user?
+Are there types of data you would like to present but can't? A table for example?
